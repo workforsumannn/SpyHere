@@ -1,119 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpyHere - Premium Tracker</title>
-    <style>
-        body {
-            background: #0a0a0a;
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        .logo {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #00f2ea, #ff0050);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-        .container {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 242, 234, 0.1);
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            padding: 15px;
-            background: #252525;
-            border: 1px solid #333;
-            color: #fff;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            outline: none;
-        }
-        input:focus { border-color: #00f2ea; }
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #00f2ea, #00a8ff);
-            border: none;
-            color: #000;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-        button:hover { transform: scale(1.02); box-shadow: 0 0 15px #00f2ea; }
-        .result-box {
-            margin-top: 20px;
-            background: #111;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            color: #00f2ea;
-            word-break: break-all;
-            display: none;
-        }
-        .copy-btn {
-            background: #333;
-            color: #fff;
-            margin-top: 10px;
-            width: auto;
-            padding: 10px 20px;
-        }
-    </style>
+      <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080c12" />
+  <title>SENSI LAB — BGMI Setup Generator</title>
+  <style>
+    :root {
+      --bg: #080c12;
+      --panel: #101720;
+      --panel-2: #141e29;
+      --line: rgba(255,255,255,.09);
+      --text: #f3f7fb;
+      --muted: #8e9baa;
+      --cyan: #62e5dc;
+      --lime: #c3f36b;
+      --purple: #9a8cff;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(36,117,122,.17), transparent 35%),
+        radial-gradient(ellipse at 5% 35%, rgba(92,77,173,.12), transparent 32%),
+        var(--bg);
+      font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, select { font: inherit; }
+    .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    header {
+      min-height: 78px; display: flex; align-items: center;
+      justify-content: space-between; border-bottom: 1px solid var(--line);
+    }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:.13em; }
+    .brand-mark {
+      width:34px; height:34px; display:grid; place-items:center; border-radius:11px;
+      color:#081012; background:linear-gradient(135deg,var(--cyan),var(--lime));
+      font-size:17px; font-weight:900;
+    }
+    .brand span:last-child { color:var(--muted); font-size:11px; letter-spacing:.2em; }
+    .status { color:var(--muted); font-size:12px; display:flex; gap:8px; align-items:center; }
+    .dot { width:7px; height:7px; border-radius:50%; background:var(--lime); box-shadow:0 0 12px var(--lime); }
+    main { padding: 42px 0 60px; }
+    .intro { margin-bottom:28px; }
+    .eyebrow { color:var(--cyan); text-transform:uppercase; font-size:11px; font-weight:800; letter-spacing:.2em; }
+    h1 { margin:9px 0 8px; font-size:clamp(32px,5vw,54px); letter-spacing:-.055em; line-height:1.04; }
+    h1 em { color:var(--cyan); font-style:normal; }
+    .intro p { max-width:650px; color:var(--muted); margin:0; }
+    .layout { display:grid; grid-template-columns:350px 1fr; gap:20px; align-items:start; }
+    .card {
+      border:1px solid var(--line); border-radius:var(--radius);
+      background:linear-gradient(160deg,rgba(20,30,41,.96),rgba(13,19,27,.96));
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+    }
+    .controls { padding:23px; }
+    .card-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:19px; }
+    h2 { font-size:15px; margin:0; letter-spacing:.01em; }
+    .step { color:var(--muted); font-size:11px; }
+    .field { margin-bottom:16px; }
+    label { display:block; margin-bottom:7px; color:#c4ced8; font-size:12px; font-weight:650; }
+    select {
+      appearance:none; width:100%; border:1px solid var(--line); border-radius:11px;
+      padding:12px 38px 12px 13px; color:var(--text); background-color:#0c1219;
+      outline:none; cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%238e9baa' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 14px center;
+    }
+    select:focus { border-color:rgba(98,229,220,.65); }
+    option { background:#101720; }
+    .generate, .copy {
+      border:0; border-radius:12px; cursor:pointer; font-weight:800;
+      transition:transform .15s ease, filter .15s ease;
+    }
+    .generate:hover, .copy:hover { transform:translateY(-1px); filter:brightness(1.08); }
+    .generate {
+      width:100%; padding:14px; margin-top:5px; color:#061012;
+      background:linear-gradient(105deg,var(--cyan),var(--lime));
+      box-shadow:0 8px 28px rgba(98,229,220,.12);
+    }
+    .fineprint { margin:12px 1px 0; color:var(--muted); font-size:11px; }
+    .results { padding:23px; min-height:460px; }
+    .results-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:19px; }
+    .results-top p { margin:4px 0 0; color:var(--muted); font-size:12px; }
+    .copy { padding:10px 13px; color:var(--text); background:#202c38; border:1px solid var(--line); font-size:12px; }
+    .badge {
+      display:inline-flex; align-items:center; gap:7px; padding:6px 9px;
+      border:1px solid rgba(195,243,107,.2); border-radius:99px;
+      color:var(--lime); background:rgba(195,243,107,.06); font-size:10px; font-weight:750;
+      text-transform:uppercase; letter-spacing:.08em;
+    }
+    .sections { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .sens-card { border:1px solid var(--line); border-radius:15px; padding:14px; background:rgba(7,12,18,.42); }
+    .sens-title { display:flex; align-items:center; justify-content:space-between; margin-bottom:11px; font-size:12px; font-weight:800; }
+    .sens-title small { color:var(--muted); font-size:10px; font-weight:600; }
+    .sens-row { display:flex; justify-content:space-between; gap:6px; padding:8px 0; border-top:1px solid rgba(255,255,255,.055); }
+    .sens-row span { color:#aab6c2; font-size:11px; }
+    .sens-row strong { font-variant-numeric:tabular-nums; font-size:12px; }
+    .camera { color:var(--cyan); } .ads { color:var(--purple); } .gyro { color:var(--lime); }
+    .tip {
+      margin-top:14px; border:1px solid rgba(98,229,220,.14); border-radius:13px;
+      padding:13px 14px; color:#b9c6d0; background:rgba(98,229,220,.045); font-size:12px;
+    }
+    .tip strong { color:var(--cyan); }
+    .footer-note { margin-top:18px; color:var(--muted); font-size:11px; }
+    @media (max-width:850px) {
+      .layout { grid-template-columns:1fr; }
+      .sections { grid-template-columns:1fr; }
+      .results { min-height:0; }
+    }
+    @media (max-width:480px) {
+      .shell { width:min(100% - 22px,1180px); }
+      main { padding-top:30px; }
+      .controls,.results { padding:17px; }
+      .status { font-size:0; }
+    }
+  </style>
 </head>
 <body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>SENSI LAB <span> / BGMI</span></div>
+      </div>
+      <div class="status">div class="status"><i class="dot"></i> PERSONALIZED STARTING POINT</div>
+    </header>
 
-    <div class="logo">SpyHere</div>
-    
-    <div class="container">
-        <p style="color: #888; margin-bottom: 20px;">Enter any link to generate a tracker</p>
-        <input type="text" id="targetLink" placeholder="Paste YouTube, FB, or Insta Link here...">
-        <button onclick="generateLink()">Generate Spy Link</button>
-        
-        <div id="result" class="result-box">
-            <span id="generatedLink"></span>
-            <br>
-            <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+    <main>
+      <section class="intro">
+         <div class="eyebrow">Player-tuned sensitivity builder</div>
+        <h1>Find your <em>control.</em></h1>
+        <p>Build a practical sensitivity setup around your playstyle and device conditions. Generate, test in training ground, then fine-tune to your own aim.</p>
+      </section>
+
+      <div class="layout">
+        <section class="card controls">
+          <div class="card-heading">
+            <h2>Your player profile</h2>profile</h2><span class="step">01 / CONFIGURE</span>
+          </div>
+
+          <div class="field">
+            <label for="style">Playstyle</label>
+            <select id="style">
+              
+              
+              
+            </select>
+          </div>
+          <div class="field">
+            <label for="fps">Typical FPS</label>
+             <select id="fps">
+              
+              
+              
+            </select>
+          </div>
+          <div class="field">
+            <label for="screen">Screen size</label>
+            <select id="screen">
+              
+              
+              
+            </select>
+          </div>
+          <div class="field">
+            <label for="gyroMode">Gyroscope mode</label>
+            <select id="gyroMode">
+              
+              
+              
+            </select>
+          </div>
+          <div class="field">
+            <label for="layout">Finger layout</label>
+             <select id="layout">
+              
+              
+              
+              
+            </select>
+          </div>
+
+                              <button class="generate" id="generate">✦ &nbsp; Generate my setup</button>
+          <p class="fineprint">Recommendations are estimates, not official BGMI settings. Your device, grip, and comfort can change the ideal values.</p>
+        </section>
+
+        <section class="card results">
+                    <div class="results-top">
+            <div>
+              <div class="badge">div class="badge"><i class="dot"></i> <span id="profileName">BALANCED PROFILE</span></div>
+              <p id="summary">Starting values tailored to your selections.</p>
+            </div>
+            <button class="copy" id="copy">Copy setup</button>
+          </div>
+
+          <div class="sections" id="output"></div>
+
+          <div class="tip">
+            <strong>Fine-tune tip</strong> — In Training Ground, test one scope at a time. If your aim overshoots, lower that setting by 5–10; if it lags behind, raise it by 5–10. Keep the rest unchanged while testing.
+          </div>
+          <div class="footer-note">Use these as a starting point and enter them manually in BGMI’s sensitivity settings. This page does not connect to or modify the game.</div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const scopes = [
+      "TPP No Scope", "FPP No Scope", "Red Dot / Holo",
+      "2x Scope", "3x Scope", "4x Scope", "6x Scope", "8x Scope"
+    ];
+
+    const base = {
+      camera: [120, 110, 60, 36, 27, 18, 12, 10],
+      ads:    [110, 100, 55, 32, 24, 16, 10, 8],
+      gyro:   [300, 300, 300, 240, 200, 120, 80, 60]
+    };
+
+    function round5(value) {
+      return Math.max(0, Math.min(400, Math.round(value / 5) * 5));
+    }
+
+    function buildValues() {
+      const style = document.querySelector("#style").value;
+      const fps = Number(document.querySelector("#fps").value);
+      const screen = document.querySelector("#screen").value;
+      const gyroMode = document.querySelector("#gyroMode").value;
+      const fingers = Number(document.querySelector("#layout").value);
+
+      const styleFactor = style === "rush" ? 1.12 : style === "precision" ? 0.88 : 1;
+      const screenFactor = screen === "small" ? 1.05 : screen === "large" ? 0.95 : 1;
+      const fpsFactor = fps >= 120 ? 1.02 : fps <= 60 ? 0.98 : 1;
+      const fingerFactor = fingers <= 2 ? 0.96 : fingers >= 4 ? 1.02 : 1;
+
+      const factor = styleFactor * screenFactor * fpsFactor * fingerFactor;
+      const camera = base.camera.map(v => round5(v * factor));
+      const ads = base.ads.map(v => round5(v * factor));
+      const gyro = base.gyro.map((v, i) => {
+        if (gyroMode === "off") return 0;
+        const zoomFactor = style === "precision" && i >= 4 ? 1.08 : 1;
+        const value = round5(v * factor * zoomFactor);
+        return gyroMode === "scope" && i < 2 ? 0 : value;
+      });
+
+      const name = style === "rush" ? "AGGRESSIVE PROFILE"
+        : style === "precision" ? "PRECISION PROFILE" : "BALANCED PROFILE";
+      document.querySelector("#profileName").textContent = name;
+      document.querySelector("#summary").textContent =
+        `${fps} FPS · ${screen} screen · ${gyroMode === "off" ? "gyro off" : gyroMode === "scope" ? "scope-on gyro" : "gyro always on"} · ${fingers}-finger layout`;
+
+      render({ camera, ads, gyro });
+    }
+
+    function render(data) {
+      const groups = [
+        ["Camera", data.camera, "camera"],
+        ["ADS", data.ads, "ads"],
+        ["Gyroscope", data.gyro, "gyro"]
+      ];
+      document.querySelector("#output").innerHTML = groups.map(([title, values, cls]) => `
+        <div class="sens-card">
+          <div class="sens-title">div class="sens-title"><span class="${cls}">${title}</span><small>VALUE</small></div>
+          ${scopes.map((scope, i) => `
+            <div class="sens-row"><span>${scope}</span><strong>${values[i]}%</strong></div>
+          `).join("")}
         </div>
-    </div>
+      `).join("");
+    }
 
-    <script>
-        function generateLink() {
-            const input = document.getElementById('targetLink').value;
-            if(!input) return alert("Please paste a link first!");
-            
-            // Yahan tum apna actual track.html ka link daalo
-            // Example: https://yourwebsite.com/track.html?target=${encodeURIComponent(input)}
-            // Filhal main ek dummy URL bana raha hun taaki tumhe idea mile
-            const spyLink = window.location.href.split('?')[0] + "track.html?target=" + encodeURIComponent(input);
-            
-            document.getElementById('generatedLink').innerText = spyLink;
-            document.getElementById('result').style.display = 'block';
-        }
+    function getSetupText() {
+      const titles = ["Camera", "ADS", "Gyroscope"];
+      const groups = [...document.querySelectorAll(".sens-card")];
+      return "SENSI LAB — BGMI recommended starting setup\\n" +
+        groups.map((group, i) => {
+          const rows = [...group.querySelectorAll(".sens-row")]
+            .map(row => `${row.querySelector("span").textContent}: ${row.querySelector("strong").textContent}`)
+            .join("\\n");
+          return `\\n${titles[i]}\\n${rows}`;
+        }).join("\\n") +
+        "\\n\\nRecommendation only; test and adjust in game.";
+    }
 
-        function copyLink() {
-            const link = document.getElementById('generatedLink').innerText;
-            navigator.clipboard.writeText(link);
-            alert("Link Copied! Send it to your target.");
-        }
-    </script>
+    document.querySelector("#generate").addEventListener("click", buildValues);
+    document.querySelector("#copy").addEventListener("click", async () => {
+      const button = document.querySelector("#copy");
+      try {
+        await navigator.clipboard.writeText(getSetupText());
+        button.textContent = "Copied!";
+        setTimeout(() => button.textContent = "Copy setup", 1400);
+      } catch {
+        button.textContent = "Copy unavailable";
+        setTimeout(() => button.textContent = "Copy setup", 1600);
+      }
+    });
+
+    buildValues();
+  </script>
 </body>
 </html>
