@@ -1,304 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#080c12" />
   <title>SENSI LAB — BGMI Setup Generator</title>
   <style>
     :root {
       --bg: #080c12;
-      --panel: #101720;
-      --panel-2: #141e29;
+      --panel: #111923;
+      --panel2: #0c131b;
       --line: rgba(255,255,255,.09);
       --text: #f3f7fb;
-      --muted: #8e9baa;
+      --muted: #91a0af;
       --cyan: #62e5dc;
       --lime: #c3f36b;
-      --purple: #9a8cff;
-      --radius: 20px;
+      --purple: #a899ff;
+      --amber: #ffc76b;
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(ellipse at 82% 0%, rgba(36,117,122,.17), transparent 35%),
-        radial-gradient(ellipse at 5% 35%, rgba(92,77,173,.12), transparent 32%),
+        radial-gradient(ellipse at 85% 0%, rgba(36,117,122,.17), transparent 35%),
+        radial-gradient(ellipse at 0% 50%, rgba(92,77,173,.11), transparent 32%),
         var(--bg);
       font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    button, select { font: inherit; }
-    .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+
+    button, input, select { font: inherit; }
+
+    .shell { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
+
     header {
-      min-height: 78px; display: flex; align-items: center;
-      justify-content: space-between; border-bottom: 1px solid var(--line);
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
     }
-    .brand { display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:.13em; }
+
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 850; letter-spacing: .13em; }
     .brand-mark {
-      width:34px; height:34px; display:grid; place-items:center; border-radius:11px;
-      color:#081012; background:linear-gradient(135deg,var(--cyan),var(--lime));
-      font-size:17px; font-weight:900;
+      width: 35px; height: 35px; display: grid; place-items: center;
+      border-radius: 11px; color: #071012;
+      background: linear-gradient(135deg, var(--cyan), var(--lime));
+      font-size: 17px; font-weight: 950;
     }
-    .brand span:last-child { color:var(--muted); font-size:11px; letter-spacing:.2em; }
-    .status { color:var(--muted); font-size:12px; display:flex; gap:8px; align-items:center; }
-    .dot { width:7px; height:7px; border-radius:50%; background:var(--lime); box-shadow:0 0 12px var(--lime); }
-    main { padding: 42px 0 60px; }
-    .intro { margin-bottom:28px; }
-    .eyebrow { color:var(--cyan); text-transform:uppercase; font-size:11px; font-weight:800; letter-spacing:.2em; }
-    h1 { margin:9px 0 8px; font-size:clamp(32px,5vw,54px); letter-spacing:-.055em; line-height:1.04; }
-    h1 em { color:var(--cyan); font-style:normal; }
-    .intro p { max-width:650px; color:var(--muted); margin:0; }
-    .layout { display:grid; grid-template-columns:350px 1fr; gap:20px; align-items:start; }
+    .brand-sub { color: var(--muted); font-size: 11px; letter-spacing: .18em; }
+    .status { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+    .status i, .badge i {
+      display: inline-block; width: 7px; height: 7px; margin-right: 7px;
+      border-radius: 50%; background: var(--lime); box-shadow: 0 0 12px var(--lime);
+    }
+
+    main { padding: 38px 0 60px; }
+    .eyebrow { color: var(--cyan); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: .2em; }
+    h1 { margin: 9px 0 8px; font-size: clamp(32px, 5vw, 54px); letter-spacing: -.055em; line-height: 1.05; }
+    h1 em { color: var(--cyan); font-style: normal; }
+    .intro p { max-width: 760px; margin: 0 0 26px; color: var(--muted); }
+
+    .layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 18px; align-items: start; }
     .card {
-      border:1px solid var(--line); border-radius:var(--radius);
-      background:linear-gradient(160deg,rgba(20,30,41,.96),rgba(13,19,27,.96));
-      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      border: 1px solid var(--line); border-radius: 19px;
+      background: linear-gradient(155deg, rgba(20,30,41,.97), rgba(12,18,26,.97));
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
     }
-    .controls { padding:23px; }
-    .card-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:19px; }
-    h2 { font-size:15px; margin:0; letter-spacing:.01em; }
-    .step { color:var(--muted); font-size:11px; }
-    .field { margin-bottom:16px; }
-    label { display:block; margin-bottom:7px; color:#c4ced8; font-size:12px; font-weight:650; }
-    select {
-      appearance:none; width:100%; border:1px solid var(--line); border-radius:11px;
-      padding:12px 38px 12px 13px; color:var(--text); background-color:#0c1219;
-      outline:none; cursor:pointer;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%238e9baa' stroke-width='1.5'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:right 14px center;
+
+    .form-card, .results { padding: 22px; }
+    .card-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    h2 { margin: 0; font-size: 15px; }
+    .step { color: var(--muted); font-size: 10px; letter-spacing: .1em; }
+
+    .field { margin-bottom: 13px; }
+    label { display: block; margin-bottom: 6px; color: #c5d0da; font-size: 11px; font-weight: 700; }
+    input, select {
+      width: 100%; min-height: 42px; padding: 10px 12px; outline: none;
+      color: var(--text); background: #0b1219; border: 1px solid var(--line); border-radius: 10px;
     }
-    select:focus { border-color:rgba(98,229,220,.65); }
-    option { background:#101720; }
-    .generate, .copy {
-      border:0; border-radius:12px; cursor:pointer; font-weight:800;
-      transition:transform .15s ease, filter .15s ease;
+    input:focus, select:focus { border-color: rgba(98,229,220,.65); }
+    input::placeholder { color: #64717e; }
+    select { color-scheme: dark; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+    .generate, .copy, .reset {
+      border: 0; border-radius: 11px; cursor: pointer; font-weight: 800;
+      transition: transform .15s ease, filter .15s ease;
     }
-    .generate:hover, .copy:hover { transform:translateY(-1px); filter:brightness(1.08); }
+    .generate:hover, .copy:hover, .reset:hover { transform: translateY(-1px); filter: brightness(1.08); }
     .generate {
-      width:100%; padding:14px; margin-top:5px; color:#061012;
-      background:linear-gradient(105deg,var(--cyan),var(--lime));
-      box-shadow:0 8px 28px rgba(98,229,220,.12);
+      width: 100%; margin-top: 5px; padding: 13px; color: #061012;
+      background: linear-gradient(105deg, var(--cyan), var(--lime));
+      box-shadow: 0 8px 28px rgba(98,229,220,.12);
     }
-    .fineprint { margin:12px 1px 0; color:var(--muted); font-size:11px; }
-    .results { padding:23px; min-height:460px; }
-    .results-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:19px; }
-    .results-top p { margin:4px 0 0; color:var(--muted); font-size:12px; }
-    .copy { padding:10px 13px; color:var(--text); background:#202c38; border:1px solid var(--line); font-size:12px; }
+    .fineprint { color: var(--muted); font-size: 10px; margin: 10px 1px 0; }
+
+    .results-top {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 15px;
+    }
     .badge {
-      display:inline-flex; align-items:center; gap:7px; padding:6px 9px;
-      border:1px solid rgba(195,243,107,.2); border-radius:99px;
-      color:var(--lime); background:rgba(195,243,107,.06); font-size:10px; font-weight:750;
-      text-transform:uppercase; letter-spacing:.08em;
+      display: inline-flex; align-items: center; padding: 6px 9px;
+      border: 1px solid rgba(195,243,107,.2); border-radius: 99px;
+      color: var(--lime); background: rgba(195,243,107,.06);
+      font-size: 10px; font-weight: 800; letter-spacing: .08em;
     }
-    .sections { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-    .sens-card { border:1px solid var(--line); border-radius:15px; padding:14px; background:rgba(7,12,18,.42); }
-    .sens-title { display:flex; align-items:center; justify-content:space-between; margin-bottom:11px; font-size:12px; font-weight:800; }
-    .sens-title small { color:var(--muted); font-size:10px; font-weight:600; }
-    .sens-row { display:flex; justify-content:space-between; gap:6px; padding:8px 0; border-top:1px solid rgba(255,255,255,.055); }
-    .sens-row span { color:#aab6c2; font-size:11px; }
-    .sens-row strong { font-variant-numeric:tabular-nums; font-size:12px; }
-    .camera { color:var(--cyan); } .ads { color:var(--purple); } .gyro { color:var(--lime); }
-    .tip {
-      margin-top:14px; border:1px solid rgba(98,229,220,.14); border-radius:13px;
-      padding:13px 14px; color:#b9c6d0; background:rgba(98,229,220,.045); font-size:12px;
+    .results-top p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .actions { display: flex; gap: 7px; }
+    .copy, .reset {
+      padding: 9px 11px; color: var(--text); background: #202c38;
+      border: 1px solid var(--line); font-size: 11px;
     }
-    .tip strong { color:var(--cyan); }
-    .footer-note { margin-top:18px; color:var(--muted); font-size:11px; }
-    @media (max-width:850px) {
-      .layout { grid-template-columns:1fr; }
-      .sections { grid-template-columns:1fr; }
-      .results { min-height:0; }
+    .reset { color: #bdc8d2; }
+
+    .performance-note {
+      margin: 0 0 14px; padding: 11px 12px;
+      border: 1px solid rgba(255,199,107,.18); border-radius: 11px;
+      color: #c9c4b9; background: rgba(255,199,107,.045); font-size: 11px;
     }
-    @media (max-width:480px) {
-      .shell { width:min(100% - 22px,1180px); }
-      main { padding-top:30px; }
-      .controls,.results { padding:17px; }
-      .status { font-size:0; }
+    .performance-note strong { color: var(--amber); }
+
+    .sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .sens-card {
+      padding: 13px; border: 1px solid var(--line); border-radius: 13px;
+      background: rgba(7,12,18,.42);
+    }
+    .sens-title {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 9px; font-size: 12px; font-weight: 850;
+    }
+    .sens-title small { color: var(--muted); font-size: 9px; font-weight: 650; }
+    .camera { color: var(--cyan); }
+    .ads { color: var(--purple); }
+    .gyro { color: var(--lime); }
+    .free { color: var(--amber); }
+    .sens-row {
+      display: flex; justify-content: space-between; gap: 8px;
+      padding: 6px 0; border-top: 1px solid rgba(255,255,255,.055);
+    }
+    .sens-row span { color: #aab6c2; font-size: 10px; }
+    .sens-row strong { color: var(--text); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .howto {
+      margin-top: 13px; padding: 12px 13px; border-radius: 11px;
+      border: 1px solid rgba(98,229,220,.14); background: rgba(98,229,220,.045);
+      color: #b9c6d0; font-size: 11px;
+    }
+    .howto strong { color: var(--cyan); }
+    .disclaimer { margin-top: 12px; color: var(--muted); font-size: 10px; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 570px) {
+      .shell { width: calc(100% - 20px); }
+      main { padding-top: 27px; }
+      .form-card, .results { padding: 15px; }
+      .sections { grid-template-columns: 1fr; }
+      .status { max-width: 125px; text-align: right; font-size: 9px; }
+      .results-top { align-items: flex-start; }
+      .actions { flex-direction: column; }
     }
   </style>
 </head>
 <body>
+  body>
   <div class="shell">
     <header>
       <div class="brand">
         <div class="brand-mark">S</div>
-        <div>SENSI LAB <span> / BGMI</span></div>
+        <div>SENSI LAB <span class="brand-sub"> / BGMI</span></div>
       </div>
-      <div class="status">div class="status"><i class="dot"></i> PERSONALIZED STARTING POINT</div>
+      <div class="status"><i></i> PLAYER-TUNED STARTING SETUP</div>
     </header>
 
     <main>
       <section class="intro">
-         <div class="eyebrow">Player-tuned sensitivity builder</div>
-        <h1>Find your <em>control.</em></h1>
-        <p>Build a practical sensitivity setup around your playstyle and device conditions. Generate, test in training ground, then fine-tune to your own aim.</p>
+        <div class="eyebrow">Full sensitivity setup generator</div>
+        <h1>Build your <em>control profile.</em></h1>
+        <p>Enter your device and playstyle to generate Camera, ADS, Gyroscope, ADS Gyroscope, and Free Look values. Test the setup in Training Ground and adjust it to your touch response.</p>
       </section>
 
       <div class="layout">
-        <section class="card controls">
+        <section class="card form-card">
+          section class="card form-card">
           <div class="card-heading">
-            <h2>Your player profile</h2>profile</h2><span class="step">01 / CONFIGURE</span>
+            <h2>Device & player profile</h2>
+            <span class="step">01 / INPUTS</span>
           </div>
 
           <div class="field">
-            <label for="style">Playstyle</label>
-            <select id="style">
-              
-              
-              
-            </select>
-          </div>
-          <div class="field">
-            <label for="fps">Typical FPS</label>
-             <select id="fps">
-              
-              
-              
-            </select>
-          </div>
-          <div class="field">
-            <label for="screen">Screen size</label>
-            <select id="screen">
-              
-              
-              
-            </select>
-          </div>
-          <div class="field">
-            <label for="gyroMode">Gyroscope mode</label>
-            <select id="gyroMode">
-              
-              
-              
-            </select>
-          </div>
-          <div class="field">
-            <label for="layout">Finger layout</label>
-             <select id="layout">
-              
-              
-              
-              
-            </select>
+            <label for="device">Device model (optional)</label>
+            <input id="device" type="text" placeholder="e.g. your phone or tablet model" />
           </div>
 
-                              <button class="generate" id="generate">✦ &nbsp; Generate my setup</button>
-          <p class="fineprint">Recommendations are estimates, not official BGMI settings. Your device, grip, and comfort can change the ideal values.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="ram">RAM</label>
+              <select id="ram">
+                
+                
+                
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="fps">Stable FPS</label>
+              <select id="fps">
+                select id="fps">
+                
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="graphics">Graphics setting</label>
+              <select id="graphics">
+                
+                
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="screen">Screen size</label>
+              <select id="screen">
+                
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="layout">Claw / finger layout</label>
+               <select id="layout">
+                
+                
+                
+                
+              </select>
+            </div>
+            </select>
+            </div>
+            <div class="field">
+              <label for="gyroMode">Gyroscope mode</label>
+              <select id="gyroMode">
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="style">Playstyle</label>
+              <select id="style">
+                
+                
+                
+              </select>
+            </div>
+            <div class="field">
+              <label for="feel">Sensitivity feel</label>
+              <select id="feel">
+                
+                
+                
+              </select>
+            </div>
+          </div>
+
+          <button class="generate" id="generate">✦ &nbsp; Generate full setup</button>
+          <p class="fineprint">Device name is recorded for your profile but is not treated as a tested device calibration. RAM and graphics inform the performance note, not an invented sensitivity bonus.</p>
         </section>
 
         <section class="card results">
-                    <div class="results-top">
+          <div class="results-top">
             <div>
-              <div class="badge">div class="badge"><i class="dot"></i> <span id="profileName">BALANCED PROFILE</span></div>
-              <p id="summary">Starting values tailored to your selections.</p>
+              <div class="badge"><i></i><span id="profileName">BALANCED PROFILE</span></div>
+              <p id="summary">Your generated sensitivity setup appears below.</p>
             </div>
-            <button class="copy" id="copy">Copy setup</button>
+            <div class="actions">
+              <button class="copy" id="copy">Copy setup</button>
+                            <button class="reset" id="reset">Reset</button>
+            </div>
           </div>
 
+          button class="reset" id="reset">Reset</button>
+            </div>
+          </div>
+
+          <div id="performance" class="performance-note"></div>
           <div class="sections" id="output"></div>
 
-          <div class="tip">
-            <strong>Fine-tune tip</strong> — In Training Ground, test one scope at a time. If your aim overshoots, lower that setting by 5–10; if it lags behind, raise it by 5–10. Keep the rest unchanged while testing.
+          div class="sections" id="output"></div>
+
+          <div class="howto">
+            <strong>How to tune it:</strong> Go to Training Ground. Test one scope at a time. If your crosshair overshoots, lower that value by 5–10. If it cannot keep up with your target, raise it by 5–10. Change only one setting per test.
           </div>
-          <div class="footer-note">Use these as a starting point and enter them manually in BGMI’s sensitivity settings. This page does not connect to or modify the game.</div>
+          <div class="disclaimer">
+            Recommendations are starting values, not guaranteed “accurate” settings for every player. BGMI options and supported FPS/graphics can vary by device and game update. This page does not connect to or modify BGMI.
+          </div>
         </section>
       </div>
     </main>
   </div>
 
   <script>
-    const scopes = [
-      "TPP No Scope", "FPP No Scope", "Red Dot / Holo",
-      "2x Scope", "3x Scope", "4x Scope", "6x Scope", "8x Scope"
+    const scopeLabels = [
+      "TPP No Scope", "FPP No Scope", "TPP Aim", "FPP Aim",
+      "Red Dot / Holo", "2x Scope", "3x Scope", "4x Scope",
+      "VSS", "6x Scope", "8x Scope"
     ];
 
     const base = {
-      camera: [120, 110, 60, 36, 27, 18, 12, 10],
-      ads:    [110, 100, 55, 32, 24, 16, 10, 8],
-      gyro:   [300, 300, 300, 240, 200, 120, 80, 60]
+      camera: [120, 110, 120, 110, 60, 36, 27, 18, 18, 12, 10],
+      ads:    [110, 100, 110, 100, 55, 32, 24, 16, 16, 10, 8],
+      gyro:   [300, 300, 300, 300, 300, 240, 200, 120, 120, 80, 60],
+      adsGyro:[300, 300, 300, 300, 300, 240, 200, 120, 120, 80, 60]
     };
 
-    function round5(value) {
-      return Math.max(0, Math.min(400, Math.round(value / 5) * 5));
-    }
+    const round5 = n => Math.max(0, Math.min(400, Math.round(n / 5) * 5));
 
-    function buildValues() {
-      const style = document.querySelector("#style").value;
-      const fps = Number(document.querySelector("#fps").value);
-      const screen = document.querySelector("#screen").value;
-      const gyroMode = document.querySelector("#gyroMode").value;
-      const fingers = Number(document.querySelector("#layout").value);
+    function makeValues(source, factor, style, gyroMode) {
+      return source.map((value, i) => {
+        if (gyroMode === "off" && (source === base.gyro || source === base.adsGyro)) return 0;
+        if (gyroMode === "scope" && i < 4 && (source === base.gyro || source === base.adsGyro)) return 0;
 
-      const styleFactor = style === "rush" ? 1.12 : style === "precision" ? 0.88 : 1;
-      const screenFactor = screen === "small" ? 1.05 : screen === "large" ? 0.95 : 1;
-      const fpsFactor = fps >= 120 ? 1.02 : fps <= 60 ? 0.98 : 1;
-      const fingerFactor = fingers <= 2 ? 0.96 : fingers >= 4 ? 1.02 : 1;
+        let scopeFactor = 1;
+        if (style === "rush" && i <= 4) scopeFactor = 1.06;
+        if (style === "precision" && i >= 5) scopeFactor = 0.92;
 
-      const factor = styleFactor * screenFactor * fpsFactor * fingerFactor;
-      const camera = base.camera.map(v => round5(v * factor));
-      const ads = base.ads.map(v => round5(v * factor));
-      const gyro = base.gyro.map((v, i) => {
-        if (gyroMode === "off") return 0;
-        const zoomFactor = style === "precision" && i >= 4 ? 1.08 : 1;
-        const value = round5(v * factor * zoomFactor);
-        return gyroMode === "scope" && i < 2 ? 0 : value;
+        return round5(value * factor * scopeFactor);
       });
-
-      const name = style === "rush" ? "AGGRESSIVE PROFILE"
-        : style === "precision" ? "PRECISION PROFILE" : "BALANCED PROFILE";
-      document.querySelector("#profileName").textContent = name;
-      document.querySelector("#summary").textContent =
-        `${fps} FPS · ${screen} screen · ${gyroMode === "off" ? "gyro off" : gyroMode === "scope" ? "scope-on gyro" : "gyro always on"} · ${fingers}-finger layout`;
-
-      render({ camera, ads, gyro });
     }
 
-    function render(data) {
-      const groups = [
-        ["Camera", data.camera, "camera"],
-        ["ADS", data.ads, "ads"],
-        ["Gyroscope", data.gyro, "gyro"]
-      ];
-      document.querySelector("#output").innerHTML = groups.map(([title, values, cls]) => `
+    function renderGroup(title, values, className, unit = "%") {
+      return `
+        "%") {
+      return `
         <div class="sens-card">
-          <div class="sens-title">div class="sens-title"><span class="${cls}">${title}</span><small>VALUE</small></div>
-          ${scopes.map((scope, i) => `
-            <div class="sens-row"><span>${scope}</span><strong>${values[i]}%</strong></div>
+          <div class="sens-title">
+                        <span class="${className}">${title}</span>
+            <small>RECOMMENDED</small>
+          </div>
+          ${scopeLabels.map((label, index) => `
+            <div class="sens-row">
+              <span>${label}</span>
+              <strong>${values[index]}${unit}</strong>
+            </div>
           `).join("")}
-        </div>
-      `).join("");
+        </div>`;
     }
 
-    function getSetupText() {
-      const titles = ["Camera", "ADS", "Gyroscope"];
-      const groups = [...document.querySelectorAll(".sens-card")];
-      return "SENSI LAB — BGMI recommended starting setup\\n" +
-        groups.map((group, i) => {
-          const rows = [...group.querySelectorAll(".sens-row")]
-            .map(row => `${row.querySelector("span").textContent}: ${row.querySelector("strong").textContent}`)
-            .join("\\n");
-          return `\\n${titles[i]}\\n${rows}`;
-        }).join("\\n") +
-        "\\n\\nRecommendation only; test and adjust in game.";
-    }
+    function generate() {
+      const device = document.querySelector("#device").value.trim();
+      const ram = Number(document.querySelector("#ram").value);
+      const fps = Number(document.querySelector("#fps").value);
+      const graphics = document.querySelector("#graphics").value;
+      const screen = document.querySelector("#screen").value;
+      const fingers = Number(document.querySelector("#layout").value);
+      const gyroMode = document.querySelector("#gyroMode").value;
+      const style = document.querySelector("#style").value;
+      const feel = document.querySelector("#feel").value;
 
-    document.querySelector("#generate").addEventListener("click", buildValues);
-    document.querySelector("#copy").addEventListener("click", async () => {
-      const button = document.querySelector("#copy");
-      try {
-        await navigator.clipboard.writeText(getSetupText());
-        button.textContent = "Copied!";
-        setTimeout(() => button.textContent = "Copy setup", 1400);
-      } catch {
-        button.textContent = "Copy unavailable";
-        setTimeout(() => button.textContent = "Copy setup", 1600);
+      const feelFactor = feel === "low" ? 0.88 : feel === "high" ? 1.12 : 1;
+      const screenFactor = screen === "compact" ? 1.03 : screen === "tablet" ? 0.95 : screen === "large" ? 0.98 : 1;
+      const fpsFactor = fps >= 120 ? 1.01 : fps <= 45 ? 0.98 : 1;
+      const layoutFactor = fingers === 2 ? 0.98 : fingers >= 4 ? 1.01 : 1;
+      const factor = feelFactor * screenFactor * fpsFactor * layoutFactor;
+
+      const results = {
+        camera: makeValues(base.camera, factor, style, gyroMode),
+        ads: makeValues(base.ads, factor, style, gyroMode),
+        gyro: makeValues(base.gyro, factor, style, gyroMode),
+        adsGyro: makeValues(base.adsGyro, factor, style, gyroMode)
+      };
+
+      const freeLook = [
+        round5(120 * screenFactor),
+        round5(100 * screenFactor),
+        round5(120 * screenFactor)
+      ];
+
+      const styleName = style === "rush" ? "AGGRESSIVE PROFILE"
+        : style === "precision" ? "PRECISION PROFILE" : "BALANCED PROFILE";
+
+      document.querySelector("#profileName").textContent = styleName;
+      document.querySelector("#summary").textContent =
+        `${device || "Device not specified"} · ${ram} GB RAM · ${fps} FPS · ${graphics} · ${fingers}-finger · ${feel} sensitivity · ${gyroMode === "always" ? "gyro always on" : gyroMode === "scope" ? "scope-on gyro" : "gyro off"}`;
+
+      document.querySelector("#output").innerHTML =
+        renderGroup("Camera", results.camera, "camera") +
+        renderGroup("ADS", results.ads, "ads") +
+        renderGroup("Gyroscope", results.gyro, "gyro") +
+        renderGroup("ADS Gyroscope", results.adsGyro, "gyro") +
+        ``<div class="sens-card">
+          div class="sens-card">
+          <div class="sens-title"><span class="free">Free Look</span><small>RECOMMENDED</small></div>
+          <div class="sens-row"><span>3rd Person Camera</span><strong>${freeLook[0]}%</strong></div>
+          <div class="sens-row"><span>1st Person Camera</span><strong>${freeLook[1]}%</strong></div>
+          strong>${freeLook[1]}%</strong></div>
+          <div class="sens-row"><span>Parachuting Camera</span><strong>${freeLook[2]}%</strong></div>
+        </div>`;
+
+      let note = `<strong>Performance note:</strong> Sensitivity is based mainly on your FPS, screen, playstyle, layout, gyro mode, and low/mid/high preference. RAM (${ram} GB) and ${graphics} graphics are included as device context; they do not directly determine aim sensitivity.`;
+      if (ram <= 4 && !graphics.toLowerCase().includes("smooth")) {
+        note += ` For more consistent touch response, consider testing Smooth graphics with the highest FPS your device can sustain.`;
       }
+      if (fps <= 45) {
+        note += ` Since your selected FPS is low, prioritize stable frame pacing before raising sensitivity.`;
+      }
+      document.querySelector("#performance").innerHTML = note;
+
+      window.currentSetup = { results, freeLook, device, ram, fps, graphics, fingers, feel, gyroMode, style };
+    }
+
+    function setupText() {
+      const s = window.currentSetup;
+      if (!s) return "Generate a setup first.";
+
+      let text = `SENSI LAB — BGMI STARTING SETUP
+Device: ${s.device || "Not specified"}
+RAM: ${s.ram} GB | FPS: ${s.fps} | Graphics: ${s.graphics}
+Layout: ${s.fingers}-finger | Feel: ${s.feel} | Gyro: ${s.gyroMode} | Style: ${s.style}
+
+`;
+      for (const [title, values] of [
+        ["Camera", s.results.camera],
+        ["ADS", s.results.ads],
+        ["Gyroscope", s.results.gyro],
+        ["ADS Gyroscope", s.results.adsGyro]
+      ]) {
+        text += `${title}\n`;
+        scopeLabels.forEach((label, i) => { text += `${label}: ${values[i]}%\n`; });
+        text += "\n";
+      }
+      text += `Free Look\n3rd Person Camera: ${s.freeLook[0]}%\n1st Person Camera: ${s.freeLook[1]}%\nParachuting Camera: ${s.freeLook[2]}%\n\nStarting values only—test and adjust in Training Ground.`;
+      return text;
+    }
+
+    document.querySelector("#generate").addEventListener("click", generate);
+    document.querySelector("#reset").addEventListener("click", () => {
+      document.querySelector("#device").value = "";
+      document.querySelector("#ram").value = "6";
+      document.querySelector("#fps").value = "60";
+      document.querySelector("#graphics").value = "Smooth";
+      document.querySelector("#screen").value = "standard";
+      document.querySelector("#layout").value = "4";
+      document.querySelector("#gyroMode").value = "always";
+      document.querySelector("#style").value = "balanced";
+      document.querySelector("#feel").value = "mid";
+      generate();
+    });
+    document.querySelector("#copy").addEventListener("click", async event => {
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(setupText());
+        button.textContent = "Copied!";
+      } catch {
+        button.textContent = "Clipboard unavailable";
+      }
+      setTimeout(() => button.textContent = "Copy setup", 1500);
     });
 
-    buildValues();
+    generate();
   </script>
 </body>
 </html>
